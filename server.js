@@ -6,8 +6,8 @@ var express = require('express'),
 	// server.createServer(app);
 	// io.listen(server);
 
-var Users = [];
-var Connections = [];
+var users = [];
+var connections = [];
 var PORT = 5000;
 
 server.listen(PORT, function(){
@@ -16,4 +16,13 @@ server.listen(PORT, function(){
 
 app.get('/', function(req, res){
 	res.sendFile(__dirname + '/index.html');
+});
+
+io.sockets.on('connection', function(socket){
+	connections.push(socket);
+	console.log('Connected: %s sockets connected', connections.length);
+
+	// Disconnect
+	connections.splice(connections.indexOf(socket), 1);
+	console.log('Disonnected: %s sockets connected', connections.length);
 });
