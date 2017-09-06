@@ -1,7 +1,21 @@
 var express = require('express'),
 	app = express(),
+	firebase = require("firebase"),
 	server = require('http').createServer(app),
 	io = require('socket.io').listen(server);
+
+
+  var config = {
+    apiKey: "AIzaSyDk1jPcYaDdpexd7LbNI1tTxU_EoE12l68",
+    authDomain: "chat-socket-203d4.firebaseapp.com",
+    databaseURL: "https://chat-socket-203d4.firebaseio.com",
+    projectId: "chat-socket-203d4",
+    storageBucket: "chat-socket-203d4.appspot.com",
+    messagingSenderId: "357573768942"
+  };
+
+  firebase.initializeApp(config);
+
 
 	// server.createServer(app);
 	// io.listen(server);
@@ -29,6 +43,14 @@ io.sockets.on('connection', function(socket){
 	console.log('Connected: %s sockets connected', connections.length);
 
 	// Disconnect
-	connections.splice(connections.indexOf(socket), 1);
-	console.log('Disonnected: %s sockets connected', connections.length);
+	socket.on('disconnect', function(data){
+		connections.splice(connections.indexOf(socket), 1);
+		console.log('Disonnected: %s sockets connected', connections.length);
+	});
+
+	// Send Message
+	socket.on('submit message', function(data){
+		io.sockets.emit('new message', {msg: data});
+	});
+	
 });

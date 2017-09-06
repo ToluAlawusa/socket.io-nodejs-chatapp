@@ -8,8 +8,9 @@
   },
   "author": "code_kaizen",
   "license": "ISC",
-  "dependencies" : {
-  	"socket.io": "*",
-  	"express": "*"
+  "dependencies": {
+    "express": "*",
+    "firebase": "^4.3.0",
+    "socket.io": "*"
   }
 }
